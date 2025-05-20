@@ -16,6 +16,7 @@ public class TodoService {
     }
 
     public List<Todo> create(Todo todo){
+        todo.setId(null);
         todoRepository.save(todo);
         return list();
     }
@@ -26,6 +27,9 @@ public class TodoService {
        return todoRepository.findAll(sort);
     }
     public List<Todo> update(Todo todo){
+        if (todo.getId() == null || !todoRepository.existsById(todo.getId())){
+            throw new IllegalArgumentException("Todo com id " + todo.getId() + " não existe!");
+        }
         todoRepository.save(todo);
         return list();
     }
